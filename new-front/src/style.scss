@@ -1,0 +1,136 @@
+// color
+
+// 浅色
+//$bgColor: #f8f8f8;
+//$themeColor: #D3E262;
+$btnThemeColor: #D3E262;
+$themeColor: #f1f1f1;
+$subtopicColor: #506F72;
+$bgColor: #f1f1f111;
+$fontColor: #213547;
+$contentColor: #fff;
+$contentBorderColor: #e5e7eb;
+$ashBgColor: rgba(103, 117, 41, 0.06);
+
+// 暗色
+$themeDarkColor: #7e90a9;
+$subtopicColor: #506F72;
+$bgDarkColor: #0F172A;
+$fontDarkColor: #ffffff;
+$contentDarkColor: #1E293B;
+$btnFontDarkColor: #000;
+$contentBorderDarkColor: #334155FF;
+$ashBgDarkColor: #262525;
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: $fontColor;
+  width: 100vw;
+  height: 100vh;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+.light {
+  text-align: center;
+  background: $bgColor;
+  color: #0F172A;
+  .inContent{
+    background: $contentColor;
+  }
+
+
+  .theme {
+    background: $themeColor;
+  }
+  .menu-box::before{
+    background: $themeColor;
+  }
+
+  .imgBox {
+    &:hover {
+      background: $contentBorderColor;
+    }
+  }
+  .active{
+    background: $contentBorderColor;
+  }
+
+  .block {
+    background: $contentColor;
+  }
+
+  .ash {
+    background: linear-gradient(to right, $bgColor, $ashBgColor);
+  }
+}
+
+.dark {
+  text-align: center;
+  background: $bgDarkColor;
+  color: white;
+  .inContent{
+    background: $contentDarkColor;
+  }
+  .theme {
+    background: $themeDarkColor;
+  }
+  .menu-box::before{
+    background: $themeDarkColor;
+  }
+
+  .imgBox {
+    &:hover {
+      background: $ashBgDarkColor;
+    }
+  }
+  .active{
+    background: $ashBgDarkColor;
+  }
+
+
+  .block {
+    background: $contentDarkColor;
+  }
+}
+
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent; /*no*/
+  background: $btnThemeColor;
+  color: white;
+  padding: 10px 20px;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+a{
+  text-decoration: none;
+}
+
+@keyframes fadeInUp {
+  0%{
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  100%{
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

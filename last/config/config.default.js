@@ -2,7 +2,7 @@
 
 'use strict';
 
-const path = require('path')
+const path = require('path');
 
 /**
  * @param {Egg.EggAppInfo} appInfo app info
@@ -20,7 +20,7 @@ module.exports = appInfo => {
   // CSRF
   config.security = {
     csrf: {
-      enable: false
+      enable: false,
     },
   };
 
@@ -31,21 +31,30 @@ module.exports = appInfo => {
 
   config.jwt = {
     secret: '123',
-  }
+  };
 
   // add your middleware config here
-  config.middleware = ['counter','parseUid'];//'connection','packet'
+  config.middleware = [ 'parseUid' ];
 
+  config.io = {
+    init: {},
+    namespace: {
+      '/': {
+        connectionMiddleware: [ 'connection' ],
+        packetMiddleware: [],
+      },
+    },
+  };
 
 
   // add your user config here
   const userConfig = {
     // myAppName: 'egg',
-    cors : {
+    cors: {
       origin: '*',
       allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH',
     },
-    mysql : {
+    mysql: {
       client: {
         // host
         host: 'localhost',

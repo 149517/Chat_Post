@@ -43,7 +43,7 @@ class ConnectDbService extends Service {
             let sql = `SELECT * FROM user WHERE id = ?`
             const result = await app.mysql.query(sql, [item]);
             // console.log(result[0]);
-            res.push(result[0])
+            res.push(...result)
         }
         return res
 

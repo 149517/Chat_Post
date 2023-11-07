@@ -19,6 +19,7 @@
     "electron": "^27.0.2",
     "postcss-pxtorem": "^6.0.0",
     "sass": "^1.69.4",
+    "socket.io-client": "^4.7.2",
     "vue": "^3.3.4",
     "vue-router": "^4.2.5",
     "vuex": "next"

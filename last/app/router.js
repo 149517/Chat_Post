@@ -1,10 +1,9 @@
 'use strict';
-
 /**
  * @param {Egg.Application} app - egg application
  */
 module.exports = app => {
-  const { router, controller, io } = app;
+  const { router, controller } = app;
   router.get('/', controller.home.index);
   router.get('/user/all', controller.user.all);
   router.post('/login', controller.user.launch_login);
@@ -18,6 +17,7 @@ module.exports = app => {
   router.post('/post/dataUpload', controller.post.modifyData);
   router.post('/post/addComment', controller.post.addCom);
   router.post('/post/getComment', controller.post.getCom);
-  // io.of('/').route('index', io.controller.chat.index);
-  // io.of('/').route('server', io.controller.chat.sendMessage);  
+
+  // socket.io
+  // io.of('/').route('res', io.controller.default.ping);
 };

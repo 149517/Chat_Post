@@ -46,7 +46,7 @@ const comData = ref([])
 const getData = async () => {
   const list = await api.getPostOne(id.value)
   // console.log(list)
-  data.value = list.data
+  data.value = list
 }
 // 获取评论
 const getComment = async () => {
@@ -54,7 +54,7 @@ const getComment = async () => {
   // comData.value = []
   const list = await api.getComment(id.value)
   // console.log(list)
-  commentData.value = list.data
+  commentData.value = list
 }
 
 const collectActive = ref(false);
@@ -64,10 +64,10 @@ const likeActive = ref(false)
 const getInteract = async () => {
   const post = await api.getOneInteract(id.value)
 
-  if (post.data.col.length > 0) {
+  if (post.collects.length > 0) {
     collectActive.value = true
   }
-  if (post.data.like.length > 0) {
+  if (post.likes.length > 0) {
     likeActive.value = true
   }
 
@@ -76,6 +76,7 @@ const getHead = async () => {
 
   let result = []
   let lis = commentData.value;
+  // console.log(lis)
   // 获取评论中含有的用户id,并进行数组去重
   const list = [...new Set(lis.map(item => item.user_id))];
   // console.log(list);
@@ -85,7 +86,7 @@ const getHead = async () => {
   // console.log(res)
 
   for (let item of lis) {
-    let line = res.data.find(li => li.id === item.user_id);
+    let line = res.find(li => li.id === item.user_id);
     if (line) {
       result.push({...item, ...line})
     }

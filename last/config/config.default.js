@@ -36,16 +36,6 @@ module.exports = appInfo => {
   // add your middleware config here
   config.middleware = [ 'parseUid' ];
 
-  config.io = {
-    init: {},
-    namespace: {
-      '/': {
-        connectionMiddleware: [ 'connection' ],
-        packetMiddleware: [],
-      },
-    },
-  };
-
 
   // add your user config here
   const userConfig = {

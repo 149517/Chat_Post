@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 'use strict';
 
 const { Controller } = require('egg');
@@ -11,13 +12,13 @@ class PostController extends Controller {
 
             ctx.body = {
                 success: true,
-                data: result
+                data: result,
             };
             ctx.status = 200;
         } catch {
             ctx.body = {
                 success: false,
-                message: "数据查询失败",
+                message: '数据查询失败',
             };
             ctx.status = 404;
         }
@@ -46,15 +47,15 @@ class PostController extends Controller {
                 data: {
                     uid: id,
                     col: collectTable,
-                    like: likeTable
-                }
+                    like: likeTable,
+                },
             };
             ctx.status = 200;
 
         } catch {
             ctx.body = {
                 success: false,
-                message: "数据查询失败",
+                message: '数据查询失败',
             };
             ctx.status = 404;
         }
@@ -81,7 +82,7 @@ class PostController extends Controller {
         } catch {
             ctx.body = {
                 success: false,
-                message: "数据查询失败",
+                message: '数据查询失败',
             };
             ctx.status = 404;
         }
@@ -97,13 +98,13 @@ class PostController extends Controller {
             const result = await ctx.service.postConnect.getPost(id);
             ctx.body = {
                 success: true,
-                data: result
+                data: result,
             };
             ctx.status = 200;
         } catch {
             ctx.body = {
                 success: false,
-                message: "数据查询失败",
+                message: '数据查询失败',
             };
             ctx.status = 404;
         }
@@ -111,42 +112,42 @@ class PostController extends Controller {
 
     // 添加帖子
     async getUpload() {
-        const { ctx, app } = this;
-        const { file } = ctx.request.body
+        const { ctx } = this;
+        const { file } = ctx.request.body;
 
         // 从中间件获取uid
-        let uid = ctx.state.uid
-        const result = await ctx.service.postConnect.addPost(uid, file)
+        const uid = ctx.state.uid;
+        await ctx.service.postConnect.addPost(uid, file);
         // console.log(result);
 
         ctx.body = {
             success: true,
-            message: "aaa"
-        }
+            message: 'aaa',
+        };
         ctx.status = 200;
     }
 
     // 添加评论
     async addCom() {
-        const { ctx } = this;
-        const { pid, content } = ctx.request.body
+    const { ctx } = this;
+        const { pid, content } = ctx.request.body;
 
-        let uid = ctx.state.uid
+        const uid = ctx.state.uid;
 
 
         try {
-            const res = await ctx.service.postConnect.fixComment(uid, pid, content)
+            await ctx.service.postConnect.fixComment(uid, pid, content);
             // console.log(res);
             ctx.body = {
                 success: true,
-                message: "添加成功"
-            }
+                message: '添加成功',
+            };
             ctx.status = 200;
         } catch {
             ctx.body = {
                 success: false,
-                message: "添加失败"
-            }
+                message: '添加失败',
+            };
             ctx.status = 404;
         }
 
@@ -156,20 +157,21 @@ class PostController extends Controller {
     // 获取评论
     async getCom() {
         const { ctx } = this;
-        const { pid } = ctx.request.body
+        const { pid } = ctx.request.body;
         try {
-            const res = await ctx.service.postConnect.findComment(pid)
+            const res = await ctx.service.postConnect.findComment(pid);
             // console.log(res);
             ctx.body = {
                 success: true,
-                data: res
-            }
+                data: res,
+            };
             ctx.status = 200;
         } catch {
             ctx.body = {
                 success: false,
-                data: res
-            }
+                // eslint-disable-next-line no-undef
+                data: res,
+            };
             ctx.status = 404;
         }
     }

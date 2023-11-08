@@ -18,6 +18,4 @@ module.exports = app => {
   router.post('/post/addComment', controller.post.addCom);
   router.post('/post/getComment', controller.post.getCom);
 
-  // socket.io
-  // io.of('/').route('res', io.controller.default.ping);
 };

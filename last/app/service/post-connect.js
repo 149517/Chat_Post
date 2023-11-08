@@ -1,3 +1,5 @@
+/* eslint-disable quotes */
+/* eslint-disable semi */
 'use strict';
 
 const Service = require('egg').Service;
@@ -9,7 +11,7 @@ class PostDbService extends Service {
         // 使用 LEFT JOIN 连接 post 和 user 表，根据 authorid 进行关联
         let sql = `
         SELECT post.*, user.pic, user.user
-        FROM post
+        FROM post   
         LEFT JOIN user ON post.authorid = user.id
         `
         const posts = await app.mysql.query(sql);

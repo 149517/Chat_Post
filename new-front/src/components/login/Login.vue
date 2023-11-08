@@ -26,15 +26,15 @@ const Launch_login = async () => {
 
   // 存储数据到本地
   // console.log(result)
-  store.commit('addUser',result.user)
-  store.commit('addPic',result.pic)
-  store.commit('addIntro',result.intro)
-  store.commit('addUid',result.uid)
+  store.commit('addUser',result.info.user)
+  store.commit('addPic',result.info.pic)
+  store.commit('addIntro',result.info.intro)
+  store.commit('addUid',result.info.id)
 
   localStorage.setItem('token',result.token)
-  localStorage.setItem('pic',result.pic)
-  localStorage.setItem('user',result.user)
-  localStorage.setItem('uid',result.uid)
+  localStorage.setItem('pic',result.info.pic)
+  localStorage.setItem('user',result.info.user)
+  localStorage.setItem('uid',result.info.id)
 
   clear()
 

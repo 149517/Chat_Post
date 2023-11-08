@@ -3,14 +3,14 @@ import {headers} from "wait-on/exampleConfig.js";
 
 export default {
     login(account, password) {
-        return axios.post('/login', {user: account, password: password})
+        return axios.post('/user/login', {user: account, password: password})
             .then(res => res.data)
             .catch(err => {
                 throw err
             })
     },
     register(account, password) {
-        return axios.post('/register', {user: account, password: password})
+        return axios.post('/user/register', {user: account, password: password})
             .then(res => res.data)
             .catch(err => {
                 throw err

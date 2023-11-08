@@ -31,16 +31,16 @@ const postData = ref([{
  * */
 const getPost = async () => {
   const result = await api.getPostList()
-  // console.log(result.data)
+  console.log(result)
 
   // 点赞信息
   // 手动添加
-  result.data.forEach((item) => {
+  result.forEach((item) => {
     item.collectActive = false;
     item.likeActive = false
   })
 
-  postData.value = result.data
+  postData.value = result
 
   await getInteract()
 }
@@ -52,10 +52,11 @@ const getPost = async () => {
  * */
 const getInteract = async () => {
   const result = await api.getPostInteract()
+  console.log(result)
   // result 包含当前用户的点赞和收藏记录，分别遍历col和like，
   // 将其中包含的post 中的数据进行修改
-  let colList = result.data.col.map(item=>item.postid)
-  let likeList =  result.data.like.map(item=>item.postid)
+  let colList = result.collects.map(item=>item.postid)
+  let likeList =  result.likes.map(item=>item.postid)
 
   // 遍历当前帖子列表，将其包含交互的数据进行修改
   postData.value.forEach((item) => {
@@ -156,6 +157,7 @@ const dataUpload = async () => {
 }
 
 onMounted(() => {
+  console.log('aa')
   getPost()
 })
 onBeforeUnmount(() => {

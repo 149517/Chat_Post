@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const {setUid} = require("../io/uid");
 const key = '123456'
 
 function extractUidFromToken(req, res, next) {
@@ -23,6 +24,8 @@ function extractUidFromToken(req, res, next) {
             const decoded = jwt.verify(token, key); // 替换为你的密钥
             // console.log(decoded)
             req.uid = decoded.uid; // 将 uid 存储在请求对象中
+            // 将uid存储到uid.js
+            setUid(decoded.uid)
             // console.log(req.uid)
             next();
         } catch (error) {

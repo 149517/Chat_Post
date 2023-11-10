@@ -44,17 +44,11 @@ const comData = ref([])
 
 // 获取帖子数据
 const getData = async () => {
-  const list = await api.getPostOne(id.value)
-  // console.log(list)
-  data.value = list
+  data.value = await api.getPostOne(id.value)
 }
 // 获取评论
 const getComment = async () => {
-  // commentData.value = []
-  // comData.value = []
-  const list = await api.getComment(id.value)
-  // console.log(list)
-  commentData.value = list
+  commentData.value = await api.getComment(id.value)
 }
 
 const collectActive = ref(false);
@@ -63,6 +57,7 @@ const likeActive = ref(false)
 // 获取 用户的交互记录
 const getInteract = async () => {
   const post = await api.getOneInteract(id.value)
+  // console.log(post)
 
   if (post.collects.length > 0) {
     collectActive.value = true
@@ -70,7 +65,6 @@ const getInteract = async () => {
   if (post.likes.length > 0) {
     likeActive.value = true
   }
-
 }
 const getHead = async () => {
 
@@ -92,7 +86,7 @@ const getHead = async () => {
     }
   }
   comData.value = result
-  // router.go(0)
+  // console.log(result)
 
 }
 
@@ -125,6 +119,7 @@ const interact = (op) => {
   } else {
     warning("暂未开通此功能")
   }
+  dataUpload()
 }
 
 // 数据提交
@@ -139,7 +134,7 @@ const dataUpload = async () => {
   }]
 
   const result = await api.dataUpload(List)
-  console.log(result)
+  // console.log(result)
 }
 // 添加评论
 const commentUpload = async () => {
@@ -148,6 +143,13 @@ const commentUpload = async () => {
     return
   }
   // console.log(msg.value)
+  comData.value.push({
+    user_id:localStorage.getItem('uid'),
+    postid:id.value,
+    user:localStorage.getItem('user'),
+    pic:localStorage.getItem('pic'),
+    content:msg.value
+  })
   const res = await api.addComment(msg.value, data.value.postid)
 
   // console.log(res)
@@ -166,7 +168,7 @@ onMounted(() => {
 
 })
 onBeforeUnmount(() => {
-  dataUpload()
+  // dataUpload()
 })
 </script>
 

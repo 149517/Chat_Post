@@ -5,7 +5,8 @@ let key = '123456';
 exports.setToken = (name,uid)=>{
   const token = jwt.sign({
   user:name, uid:uid
-  },key,{ expiresIn:'1h' });
+  },key,);
+  // },key,{ expiresIn:'1h' });
   return token
 }
 // exports.setToken = function(username,userid){

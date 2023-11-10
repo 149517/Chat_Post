@@ -31,7 +31,7 @@ const postData = ref([{
  * */
 const getPost = async () => {
   const result = await api.getPostList()
-  console.log(result)
+  // console.log(result)
 
   // 点赞信息
   // 手动添加
@@ -52,7 +52,7 @@ const getPost = async () => {
  * */
 const getInteract = async () => {
   const result = await api.getPostInteract()
-  console.log(result)
+  // console.log(result)
   // result 包含当前用户的点赞和收藏记录，分别遍历col和like，
   // 将其中包含的post 中的数据进行修改
   let colList = result.collects.map(item=>item.postid)
@@ -125,6 +125,8 @@ const interact = (op, item) => {
     // 点击评论时候进入详情
     openDetails(item.postid)
   }
+  dataUpload(item)
+  // getInteract()
 }
 
 /**
@@ -133,35 +135,48 @@ const interact = (op, item) => {
  * 组件销毁前调用
  * */
 
-const dataUpload = async () => {
+/**
+ * 发送交互事件
+ * 原本为点击后先存储在客户端，最后在销毁时候一次性发送
+ * 但是会在某些时候不会上传
+ * 故改为实时发送
+ * */
+const dataUpload = async (item) => {
   let List = []
-  modifyList.value.forEach((item) => {
-    let post = postData.value.findIndex(li => li.postid === item);
-    if (post !== -1) {
-      // postData.value[post]  发生过交互的数据
-      // console.log(postData.value[post])
-      let data = postData.value[post]
-      List.push({
-        postid: data.postid,
-        collect: data.collect,
-        collectActive: data.collectActive,
-        thumbs_up: data.thumbs_up,
-        likeActive: data.likeActive
-      })
-    }
-  })
-
+  // modifyList.value.forEach((item) => {
+  //   let post = postData.value.findIndex(li => li.postid === item);
+  //   if (post !== -1) {
+  //     // postData.value[post]  发生过交互的数据
+  //     // console.log(postData.value[post])
+  //     let data = postData.value[post]
+  //     List.push({
+  //       postid: data.postid,
+  //       collect: data.collect,
+  //       collectActive: data.collectActive,
+  //       thumbs_up: data.thumbs_up,
+  //       likeActive: data.likeActive
+  //     })
+  //   }
+  // })
+  // modifyList.value = null
+  List.push({
+          postid: item.postid,
+          collect: item.collect,
+          collectActive: item.collectActive,
+          thumbs_up: item.thumbs_up,
+          likeActive: item.likeActive
+        })
   // 发送数据
   const result = await api.dataUpload(List)
   // console.log(result)
 }
 
 onMounted(() => {
-  console.log('aa')
+  // console.log('aa')
   getPost()
 })
 onBeforeUnmount(() => {
-  dataUpload()
+  // dataUpload()
 })
 </script>
 

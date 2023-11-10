@@ -51,7 +51,7 @@ export default {
     },
     // 根据用户查询用户的交互记录
     getPostInteract() {
-        return axios.post('/post/interact')
+        return axios.get('/post/interact')
             .then(res => res.data)
             .catch(err => {
                 throw err
@@ -59,7 +59,7 @@ export default {
     },
     // 获取单条帖子的交互
     getOneInteract(id) {
-        return axios.post('/post/interact', {pid: id})
+        return axios.get(`/post/interact/${id}`)
             .then(res => res.data)
             .catch(err => {
                 throw err

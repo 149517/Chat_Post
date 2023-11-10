@@ -66,7 +66,7 @@ router.post('/upload', (req, res) => {
 /**
  * 获取用户的交互记录
  * */
-router.post('/interact/:id?', (req, res) => {
+router.get('/interact/:id?', (req, res) => {
     const id = req.params.id;
     let uid = req.uid;
     if (id === undefined) {
@@ -97,7 +97,7 @@ router.post('/interact/:id?', (req, res) => {
  * 用户交互记录
  */
 function performQuery(sql, params, callback) {
-    console.log(params)
+    // console.log(params)
     db.query(sql, params, (err, result) => {
         if (err) {
             console.error('数据库查询出错', err);
@@ -108,6 +108,52 @@ function performQuery(sql, params, callback) {
     });
 }
 
+function modifyInter(op, item, uid, res) {
+    try {
+        let checkSql, sqlAdd, sqlDel;
+        if (op === 'collect') {
+            checkSql = 'SELECT * FROM post_collects WHERE postid = ? AND userid = ?';
+            sqlAdd = 'INSERT INTO post_collects (postid, userid) VALUES (?, ?)';
+            sqlDel = 'DELETE FROM post_collects WHERE postid = ? AND userid = ?';
+        } else if (op === 'like') {
+            checkSql = 'SELECT * FROM post_likes WHERE postid = ? AND userid = ?';
+            sqlAdd = 'INSERT INTO post_likes (postid, userid) VALUES (?, ?)';
+            sqlDel = 'DELETE FROM post_likes WHERE postid = ? AND userid = ?';
+        }
+
+        db.query(checkSql, [item.postid, uid], (err, rows) => {
+            if (err) {
+                console.log('数据查询失败');
+            } else if (rows.length === 0) {
+                // 不存在时才插入数据
+                db.query(sqlAdd, [item.postid, uid], (err, result) => {
+                    if (err) {
+                        console.log('数据添加失败')
+                        res.status(401).send('数据添加失败')
+                    }
+                    // res.status(200).send("数据添加成功")
+                    return '数据添加成功'
+                });
+            } else {
+                // 存在时删除数据
+                db.query(sqlDel, [item.postid, uid], (err, result) => {
+                    if (err) {
+                        console.log('数据删除失败')
+                        res.status(401).send('数据删除失败')
+                    }
+                    // res.status(200).send("数据删除成功")
+                    return '数据添加成功'
+                });
+
+            }
+        });
+    } catch (err) {
+        console.log('发生错误：', err);
+        res.status(500).send("服务器内部错误")
+    }
+}
+
+
 /**
  * 修改用户的交互数据
  * */
@@ -116,52 +162,43 @@ router.post('/dataUpload', (req, res) => {
     const {list} = req.body;
 
     for (let item of list) {
-        let sql = 'UPDATE post SET collect = ?, thumbs_up = ? WHERE postid = ? '
-        db.query(sql, [item.collect, item.thumbs_up, item.postid], (err, result) => {
+        // 先查询数据库中的记录
+        let sqlQuery = 'SELECT * FROM post WHERE postid = ?';
+        db.query(sqlQuery, [item.postid], (err, rows) => {
             if (err) {
-                console.log('数据修改失败')
-                res.status(500).send("数据修改失败")
-            }
-            if (item.collectActive) {
-                let checkSql = 'SELECT * FROM post_collects WHERE postid = ? AND userid = ?';
-                db.query(checkSql, [item.postid, uid], (err, rows) => {
-                    if (err) {
-                        console.log('数据查询失败');
-                    } else if (rows.length === 0) {
-                        // 不存在时才插入数据
-                        let sqlCol = 'INSERT INTO post_collects (postid, userid) VALUES (?, ?)';
-                        db.query(sqlCol, [item.postid, uid], (err, result) => {
-                            if (err) {
-                                console.log('数据添加失败')
-                                res.send('数据添加失败')
-                            }
-                            res.status(200).send("数据添加成功")
-                        });
+                console.log('数据查询失败');
+                res.status(500).send("数据查询失败");
+            } else {
+                // 比对查询结果和list中的数据，找出需要更新的字段
+                let changes = {};
+                if (rows[0].collect !== item.collect) {
+                    changes.collect = item.collect;
+                }
+                if (rows[0].thumbs_up !== item.thumbs_up) {
+                    changes.thumbs_up = item.thumbs_up;
+                }
 
-                    }
-                });
-            }
-            if (item.likeActive) {
-                let checkSql = 'SELECT * FROM post_likes WHERE postid = ? AND userid = ?';
-                db.query(checkSql, [item.postid, uid], (err, rows) => {
+                // 更新数据
+                let sqlUpdate = 'UPDATE post SET collect = ?, thumbs_up = ? WHERE postid = ?';
+                db.query(sqlUpdate, [item.collect, item.thumbs_up, item.postid], (err, result) => {
                     if (err) {
-                        console.log('数据查询失败');
-                    } else if (rows.length === 0) {
-                        // 不存在时才插入数据
-                        let sqlLike = 'INSERT INTO post_likes (postid, userid) VALUES (?, ?)';
-                        db.query(sqlLike, [item.postid, uid], (err, result) => {
-                            if (err) {
-                                console.log('数据添加失败')
-                                res.send('数据添加失败')
-                            }
-                            res.status(200).send("数据添加成功")
-                        });
+                        console.log('数据修改失败');
+                        res.status(500).send("数据修改失败");
+                    } else {
+                        if(changes.collect){
+                            modifyInter('collect', item, uid, res);
+                        }
+                        if(changes.thumbs_up){
+                            modifyInter('like', item, uid, res);
+                        }
+                        res.status(200).send("数据修改成功");
                     }
                 });
             }
-        })
+        });
     }
-})
+});
+
 
 /**
  * 添加评论

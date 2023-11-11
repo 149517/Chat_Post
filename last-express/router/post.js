@@ -7,16 +7,23 @@ const router = express.Router();
  * */
 router.get('/all', (req, res) => {
 
-    let sql = 'SELECT post.*, user.pic, user.user FROM post LEFT JOIN user ON post.authorid = user.id'
+    // let sql = 'SELECT post.*, user.pic, user.user FROM post LEFT JOIN user ON post.authorid = user.id'
+    let sql = 'SELECT post.*, user.pic, user.user, ' +
+        'JSON_ARRAYAGG(post_images.image) AS images ' +
+        'FROM post ' +
+        'LEFT JOIN user ON post.authorid = user.id ' +
+        'LEFT JOIN post_images ON post.postid = post_images.postid ' +
+        'GROUP BY post.postid';
     db.query(sql, (err, results) => {
         if (err) {
-            console.log('数据查询失败')
+            console.log('all 数据查询失败')
             return res.status(500).send({error: '数据查询失败'});
         }
         if (results.length === 0) {
             console.log('查询错误');
             return res.status(401).send({error: '查询错误'});
         }
+        // console.log(results)
         res.status(200).send(results)
     })
 })
@@ -32,7 +39,18 @@ router.get('/list/:id', (req, res) => {
             console.log('数据查询失败')
             return res.status(500).send({error: '数据查询失败'});
         }
-        res.status(200).send(result[0])
+        // res.send(result[0])
+        let sqlImg = 'SELECT * from post_images WHERE postid = ?'
+        db.query(sqlImg, [id], (err, row) => {
+            if (err) {
+                console.log('数据查询失败')
+                return res.status(500).send({error: '数据查询失败'});
+            }
+            // console.log(row)
+            result[0].images = row;
+            res.status(200).send(result[0])
+        })
+
     })
 })
 
@@ -52,13 +70,17 @@ router.post('/upload', (req, res) => {
         // 添加成功，添加图片信息
         let sqlImg = 'INSERT INTO post_images (postid,image) VALUES (?,?)'
         let postid = result.insertId;
-        db.query(sqlImg, [postid, file.images], (err, success) => {
-            if (err) {
-                console.log('图片添加失败')
-                return res.status(500).send({error: '图片添加失败'});
-            }
-            res.status(200).send(success)
-        })
+        // 循环添加图片
+        for (let item of file.images) {
+            db.query(sqlImg, [postid, item], (err, success) => {
+                if (err) {
+                    console.log('图片添加失败')
+                    return res.status(500).send({error: '图片添加失败'});
+                }
+                res.status(200).send(success)
+            })
+        }
+
 
     })
 })
@@ -185,10 +207,10 @@ router.post('/dataUpload', (req, res) => {
                         console.log('数据修改失败');
                         res.status(500).send("数据修改失败");
                     } else {
-                        if(changes.collect){
+                        if (changes.collect) {
                             modifyInter('collect', item, uid, res);
                         }
-                        if(changes.thumbs_up){
+                        if (changes.thumbs_up) {
                             modifyInter('like', item, uid, res);
                         }
                         res.status(200).send("数据修改成功");

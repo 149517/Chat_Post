@@ -41,10 +41,15 @@ const store = useStore()
 // 需要通过 click 的变化触发函数，将图片传递到父组件一起发送
 const click = computed(()=>store.state.send)
 
+
 const emit = defineEmits(['sending'])
 watch(click,(newValue)=>{
   if(newValue === true) {
     emit('sending',fileList.value)
+  }
+  if(newValue === false){
+    console.log('清除数据')
+    fileList.value = []
   }
 })
 
@@ -59,7 +64,7 @@ const handleCancel = () => {
 };
 const handlePreview = async file => {
   if (!file.url && !file.preview) {
-    file.preview = await getBase64(file.originFileObj);
+    file.preview = await getBase64(file.originFileObj,null, { quality: 1 });
   }
   previewImage.value = file.url || file.preview;
   previewVisible.value = true;

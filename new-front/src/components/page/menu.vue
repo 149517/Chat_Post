@@ -16,6 +16,11 @@ const handleFunc = (item) => {
   }
   let link = item.link;
   if (link) {
+    // if(link === '/home/chat'){
+    //   store.commit('toggleChatPage',true)
+    // }else{
+    //   store.commit('toggleChatPage',false)
+    // }
     router.push(link)
   }
 
@@ -123,6 +128,7 @@ const menu = ref([
 <style scoped lang="scss">
 .content {
   border-radius: 20px;
+
 }
 
 .menu-box {

@@ -4,13 +4,15 @@
 //$bgColor: #f8f8f8;
 //$themeColor: #D3E262;
 $btnThemeColor: #D3E262;
-$themeColor: #f1f1f1;
+//$themeColor: #f1f1f1;
+$themeColor: #F3F3F5;
 $subtopicColor: #506F72;
 $bgColor: #f1f1f111;
 $fontColor: #213547;
 $contentColor: #fff;
 $contentBorderColor: #e5e7eb;
-$ashBgColor: rgba(103, 117, 41, 0.06);
+$ashBgColor: #F3F3F5;
+
 
 // 暗色
 $themeDarkColor: #7e90a9;
@@ -27,6 +29,9 @@ $ashBgDarkColor: #262525;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+.ashBg{
+  background: $ashBgColor;
 }
 
 :root {
@@ -47,7 +52,8 @@ $ashBgDarkColor: #262525;
   text-align: center;
   background: $bgColor;
   color: #0F172A;
-  .inContent{
+
+  .inContent {
     background: $contentColor;
   }
 
@@ -55,7 +61,8 @@ $ashBgDarkColor: #262525;
   .theme {
     background: $themeColor;
   }
-  .menu-box::before{
+
+  .menu-box::before {
     background: $themeColor;
   }
 
@@ -64,7 +71,8 @@ $ashBgDarkColor: #262525;
       background: $contentBorderColor;
     }
   }
-  .active{
+
+  .active {
     background: $contentBorderColor;
   }
 
@@ -81,13 +89,16 @@ $ashBgDarkColor: #262525;
   text-align: center;
   background: $bgDarkColor;
   color: white;
-  .inContent{
+
+  .inContent {
     background: $contentDarkColor;
   }
+
   .theme {
     background: $themeDarkColor;
   }
-  .menu-box::before{
+
+  .menu-box::before {
     background: $themeDarkColor;
   }
 
@@ -96,7 +107,8 @@ $ashBgDarkColor: #262525;
       background: $ashBgDarkColor;
     }
   }
-  .active{
+
+  .active {
     background: $ashBgDarkColor;
   }
 
@@ -120,16 +132,16 @@ button {
   transition: border-color 0.25s;
 }
 
-a{
+a {
   text-decoration: none;
 }
 
 @keyframes fadeInUp {
-  0%{
+  0% {
     opacity: 0;
     transform: translateY(-50px);
   }
-  100%{
+  100% {
     opacity: 1;
     transform: translateY(0);
   }

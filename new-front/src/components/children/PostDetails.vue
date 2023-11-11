@@ -20,7 +20,7 @@ const data = ref({
   user: null,
   content: null,
   create_time: null,
-  image_data: [
+  images: [
     {
       image_id: null,
       image: null
@@ -173,7 +173,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="container theme">
+  <div class="container">
     <div class="box">
       <div class="head">
         <img :src="data.pic" alt="">
@@ -184,7 +184,7 @@ onBeforeUnmount(() => {
         <div class="tit">{{ data.title }}</div>
         <div class="text">{{ data.content }}</div>
       </div>
-      <div class="img" v-for="item in data.image_data" :key="item.image_id">
+      <div class="img" v-for="item in data.images" :key="item.image_id">
         <img :src="item.image" alt="">
       </div>
       <div class="time">{{ data.create_time }}</div>
@@ -216,7 +216,7 @@ onBeforeUnmount(() => {
             </div>
           </div>
           <div class="add">
-            <input type="text" v-model.trim="msg">
+            <input type="text" v-model.trim="msg" @keydown.enter="commentUpload">
             <button @click="commentUpload">评论</button>
           </div>
         </div>

@@ -10,10 +10,10 @@ const dark = computed(() => {
   return store.state.dark
 })
 const eject = computed(() => store.state.eject)
+
 </script>
 
 <template>
-  <!--  <h1>HOME</h1>-->
   <div class="container" :class="dark?'dark':'light'">
     <Menu class="menu" :class="eject?'eject-menu':''"></Menu>
 
@@ -21,13 +21,13 @@ const eject = computed(() => store.state.eject)
 
     <Tabulation class="tabulation"></Tabulation>
 
-
   </div>
 </template>
 
 <style scoped lang="scss">
-$rightWidth: 350px;
+$rightWidth: 300px;
 $contentWidth: calc(100vw - 20px * 2 - 30px * 2 - 60px - $rightWidth);
+$boxHeight:98vh;
 .container {
   padding: 0 30px;
   width: 100vw;
@@ -38,7 +38,7 @@ $contentWidth: calc(100vw - 20px * 2 - 30px * 2 - 60px - $rightWidth);
 
 .menu {
   width: 60px;
-  height: 94vh;
+  height: $boxHeight;
   transition: all .5s linear;
 }
 
@@ -48,20 +48,19 @@ $contentWidth: calc(100vw - 20px * 2 - 30px * 2 - 60px - $rightWidth);
 
 .tabulation {
   width: $rightWidth;
-  height: 94vh;
+  height: $boxHeight;
   overflow: hidden;
-  border-radius: 20px;
-  //border: 1px silver solid;
+  border-radius: 8px;
   transition: all .5s linear;
 }
+
 .h_con {
   width: $contentWidth;
-  height: 94vh;
+  height: $boxHeight;
   margin: 0 10px;
   overflow: hidden;
-  border-radius: 20px;
+  border-radius: 8px;
   transition: all .5s linear;
-  //border: 1px silver solid;
 }
 
 @media screen and (max-width: 800px) {

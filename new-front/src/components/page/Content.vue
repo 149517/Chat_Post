@@ -3,9 +3,8 @@
 </script>
 
 <template>
-<div class="bg">
-  <div class="container">
-<!--    <h3>Content</h3>-->
+<div>
+  <div class="container theme">
     <div class="page">
       <router-view></router-view>
     </div>
@@ -16,5 +15,6 @@
 <style scoped lang="scss">
 .container{
   //padding: 10px;
+  height: 100vh;
 }
 </style>

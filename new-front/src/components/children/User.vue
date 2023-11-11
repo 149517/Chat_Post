@@ -2,9 +2,9 @@
 
 import {computed, onMounted, ref} from "vue";
 import api from "../../utils/api.js";
-import {mapGetters, useStore} from "vuex";
+import {useStore} from "vuex";
 
-
+const chat = computed(()=>store.state.chatPage)
 const store = useStore()
 const currentUser = ref(
     {
@@ -35,6 +35,11 @@ const getBuddy = async () => {
 const reduce = ref(false)
 
 const fixReduce = () => {
+  if(reduce.value === false){
+    store.commit('toggleChatPage',true)
+  }else{
+    store.commit('toggleChatPage',false)
+  }
   reduce.value = !reduce.value
 }
 
@@ -59,12 +64,10 @@ onMounted(() => {
       <div class="trends">
         <div class="title">最近动态</div>
         <div class="after" :class="{'after-reduce':reduce}" @click="fixReduce">
-
         </div>
       </div>
-
     </div>
-    <div class="buddy theme">
+    <div class="buddy theme" :class="{'buddy-increase':chat}">
       <div class="title">好友列表</div>
       <div class="scroll-view">
         <div class="list box" v-for="item in list" :key="item.id">
@@ -77,16 +80,17 @@ onMounted(() => {
           </div>
         </div>
       </div>
-
-
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
 $userHeight: 280px;
-$buddyHeight: calc(100vh - $userHeight - 60px - 20px * 2);
-
+$buddyHeight: calc(100vh - $userHeight - 20px * 2);
+.bg{
+  width: 100%;
+  height: 100vh;
+}
 .box {
   display: flex;
   align-items: center;
@@ -164,7 +168,6 @@ $buddyHeight: calc(100vh - $userHeight - 60px - 20px * 2);
   .title {
     border-bottom: 1px rgb(199, 218, 76) solid;
   }
-
   width: 100%;
   height: $buddyHeight;
   overflow: hidden;
@@ -173,9 +176,12 @@ $buddyHeight: calc(100vh - $userHeight - 60px - 20px * 2);
   border-radius: 10px;
   margin-top: 20px;
 }
+.buddy-increase{
+  height: calc($buddyHeight + $userHeight - 150px);
+}
 
 .scroll-view {
-  height: calc($buddyHeight - 30px);
+  height: calc($buddyHeight + $userHeight - 150px - 30px);
   padding-bottom: 30px;
   overflow-y: scroll;
 }

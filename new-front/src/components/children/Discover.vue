@@ -11,10 +11,7 @@ const postData = ref([{
   title: null,
   content: null,
   create_time: null,
-  image_data: [{
-    image_id: null,
-    image: null
-  }],
+  images: [],
   pic: null,
   user: null,
   collect: null,
@@ -31,7 +28,7 @@ const postData = ref([{
  * */
 const getPost = async () => {
   const result = await api.getPostList()
-  // console.log(result)
+  console.log(result)
 
   // 点赞信息
   // 手动添加
@@ -55,8 +52,8 @@ const getInteract = async () => {
   // console.log(result)
   // result 包含当前用户的点赞和收藏记录，分别遍历col和like，
   // 将其中包含的post 中的数据进行修改
-  let colList = result.collects.map(item=>item.postid)
-  let likeList =  result.likes.map(item=>item.postid)
+  let colList = result.collects.map(item => item.postid)
+  let likeList = result.likes.map(item => item.postid)
 
   // 遍历当前帖子列表，将其包含交互的数据进行修改
   postData.value.forEach((item) => {
@@ -100,7 +97,7 @@ const warning = () => {
 // 用于存储用户交互过的 postid
 const modifyList = ref([])
 const interact = (op, item) => {
-  if(!upload.checkUser()) {
+  if (!upload.checkUser()) {
     warning()
     // tips 进行提示
     return
@@ -160,12 +157,12 @@ const dataUpload = async (item) => {
   // })
   // modifyList.value = null
   List.push({
-          postid: item.postid,
-          collect: item.collect,
-          collectActive: item.collectActive,
-          thumbs_up: item.thumbs_up,
-          likeActive: item.likeActive
-        })
+    postid: item.postid,
+    collect: item.collect,
+    collectActive: item.collectActive,
+    thumbs_up: item.thumbs_up,
+    likeActive: item.likeActive
+  })
   // 发送数据
   const result = await api.dataUpload(List)
   // console.log(result)
@@ -191,8 +188,16 @@ onBeforeUnmount(() => {
         <div class="content" @click="openDetails(item.postid)">
           <div class="tit">{{ item.title }}</div>
           <div class="con">{{ item.content }}</div>
-          <div class="images" v-for="img in (item.image_data)" :key="img.image_id">
-            <img :src="img.image" alt="">
+          <div class="images">
+            <div class="liBox" v-for="img in item.images">
+              <a-image
+                  v-if="img"
+                  :width="240"
+                  :height="240"
+                  :src="img"
+                  @click.stop
+              ></a-image>
+            </div>
           </div>
           <div class="time">{{ item.create_time }}</div>
         </div>
@@ -219,16 +224,17 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped lang="scss">
-$boxHeight: calc(100vh - 40px);
+$boxHeight: 100vh;
 $imgWid: 60%;
-.container{
-  //padding: 10px 20px;
+.container {
+  background: white;
   border-radius: 8px;
 }
+
 .box {
   width: 100%;
   height: calc($boxHeight - 30px);
-  padding-bottom: 30px;
+  border-radius: 8px;
   overflow-y: scroll;
 }
 
@@ -243,13 +249,13 @@ $imgWid: 60%;
 }
 
 .line {
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   text-align: left;
   position: relative;
   top: 0;
   left: 0;
-  border-radius: 10px;
-  padding: 20px 20px 30px;
+  border-radius: 8px;
+  padding: 20px 20px 0;
 
   .head {
     display: flex;
@@ -267,7 +273,8 @@ $imgWid: 60%;
   }
 
   .content {
-    margin-top: 20px;
+    margin: 20px 0 0;
+    border-bottom: 2px solid white;
 
     .tit {
       font-weight: bold;
@@ -275,24 +282,27 @@ $imgWid: 60%;
 
     .con {
       font-size: 16px;
-      margin: 20px 0;
+      margin: 10px 0;
     }
   }
 
   .images {
     width: 100%;
+    display: flex;
 
-    img {
-      width: $imgWid;
+    .liBox {
+      overflow: hidden;
       border-radius: 5px;
+      margin-right: 5px;
     }
   }
 
   .interact {
-    margin-top: 20px;
+    padding: 10px 0;
     display: flex;
     justify-content: space-around;
     align-items: center;
+
 
     img {
       width: 30px;
@@ -302,7 +312,6 @@ $imgWid: 60%;
     span {
       line-height: 30px;
       margin-left: 10px;
-
     }
 
   }

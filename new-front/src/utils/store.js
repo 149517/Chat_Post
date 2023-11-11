@@ -6,7 +6,8 @@ const store = createStore({
             dark: false,
             eject:false,
             login:true,
-            send:false,
+            send:null,
+            chatPage:false,
 
             // User
             user:localStorage.getItem('user'),
@@ -24,6 +25,9 @@ const store = createStore({
         },
         toggleLogin(state,value){
             state.login = value
+        },
+        toggleChatPage(state,value){
+            state.chatPage = value
         },
         changeSend(state,value){
             state.send = value

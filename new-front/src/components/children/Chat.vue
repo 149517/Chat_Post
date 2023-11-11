@@ -1,5 +1,5 @@
 <template>
-  <div class="container theme">
+  <div class="container">
     <h3>chat</h3>
     <div class="box">
       <div class="line" v-for="item in list">
@@ -89,8 +89,9 @@ onMounted(()=>{
 
 <style scoped lang="scss">
 .container {
+  height: 100vh;
   padding: 10px 20px;
-  border-radius: 20px;
+  //border-radius: 20px;
 }
 
 .box {

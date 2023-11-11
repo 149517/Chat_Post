@@ -5,11 +5,13 @@ import Chat from "../components/children/Chat.vue";
 import Login from "../components/login/Login.vue";
 import PostDetails from "../components/children/PostDetails.vue";
 import Edit from "../components/children/Edit.vue";
+import Welcome from "../components/page/Welcome.vue";
 
 const router = createRouter({
     history: createWebHashHistory(),
     routes: [
-        {path: '/', redirect:'/home'},
+        {path: '/', component:Welcome},
+        // {path: '/', redirect:'/home'},
         {
             path: '/home', component: Home,
             redirect:'/home/discover',

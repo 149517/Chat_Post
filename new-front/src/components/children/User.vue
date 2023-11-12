@@ -51,7 +51,7 @@ onMounted(() => {
 
 <template>
   <div class="bg">
-    <div class="plane theme" :class="{'plane-reduce':reduce}">
+    <div class="plane bor" :class="{'plane-reduce':reduce}">
       <div class="box">
         <div class="imgBox">
           <img :src="currentUser.pic" alt="">
@@ -67,7 +67,7 @@ onMounted(() => {
         </div>
       </div>
     </div>
-    <div class="buddy theme" :class="{'buddy-increase':chat}">
+    <div class="buddy bor" :class="{'buddy-increase':chat}">
       <div class="title">好友列表</div>
       <div class="scroll-view">
         <div class="list box" v-for="item in list" :key="item.id">
@@ -90,6 +90,10 @@ $buddyHeight: calc(100vh - $userHeight - 20px * 2);
 .bg{
   width: 100%;
   height: 100vh;
+}
+.bor{
+  border: 1px solid black;
+  border-radius: 8px;
 }
 .box {
   display: flex;

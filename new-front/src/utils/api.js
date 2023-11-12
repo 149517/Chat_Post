@@ -93,19 +93,27 @@ export default {
 
     },
     // 获取评论
-    getComment(pid){
-      return axios.post('/post/getComment',{pid:pid})
-          .then(res => res.data)
-          .catch(err => {
-              throw err
-          })
+    getComment(pid) {
+        return axios.post('/post/getComment', {pid: pid})
+            .then(res => res.data)
+            .catch(err => {
+                throw err
+            })
     },
     // 添加评论
-    addComment(value,pid){
-        return axios.post('/post/addComment',{
-            pid:pid,
-            content:value
+    addComment(value, pid) {
+        return axios.post('/post/addComment', {
+            pid: pid,
+            content: value
         })
+            .then(res => res.data)
+            .catch(err => {
+                throw err
+            })
+    },
+    // 获取收藏列表
+    getCollectData() {
+        return axios.get('/post/collect')
             .then(res => res.data)
             .catch(err => {
                 throw err

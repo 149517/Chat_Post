@@ -16,11 +16,6 @@ const handleFunc = (item) => {
   }
   let link = item.link;
   if (link) {
-    // if(link === '/home/chat'){
-    //   store.commit('toggleChatPage',true)
-    // }else{
-    //   store.commit('toggleChatPage',false)
-    // }
     router.push(link)
   }
 
@@ -84,7 +79,7 @@ const menu = ref([
       id: "5",
       name: "收藏",
       icon: "src/assets/icon/collect.png",
-      link: "",
+      link: "/home/collect",
       active: false
     }],
   [{

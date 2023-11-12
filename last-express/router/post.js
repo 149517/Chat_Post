@@ -33,26 +33,59 @@ router.get('/all', (req, res) => {
  * */
 router.get('/list/:id', (req, res) => {
     const id = req.params.id;
-    let sql = 'SELECT post.*, user.pic, user.user FROM post LEFT JOIN user ON post.authorid = user.id WHERE postid = ?'
-    db.query(sql, [id], (err, result) => {
-        if (err) {
-            console.log('数据查询失败')
-            return res.status(500).send({error: '数据查询失败'});
+    getPostData(id, db, (error, data) => {
+        if (error) {
+            return res.status(500).send(error);
         }
-        // res.send(result[0])
-        let sqlImg = 'SELECT * from post_images WHERE postid = ?'
-        db.query(sqlImg, [id], (err, row) => {
-            if (err) {
-                console.log('数据查询失败')
-                return res.status(500).send({error: '数据查询失败'});
-            }
-            // console.log(row)
-            result[0].images = row;
-            res.status(200).send(result[0])
-        })
-
-    })
+        // Do something with the data (e.g., return it, process it, etc.)
+        res.status(200).send(data);
+    });
+    // let sql = 'SELECT post.*, user.pic, user.user FROM post LEFT JOIN user ON post.authorid = user.id WHERE postid = ?'
+    // db.query(sql, [id], (err, result) => {
+    //     if (err) {
+    //         console.log('数据查询失败')
+    //         return res.status(500).send({error: '数据查询失败'});
+    //     }
+    //     // res.send(result[0])
+    //     let sqlImg = 'SELECT * from post_images WHERE postid = ?'
+    //     db.query(sqlImg, [id], (err, row) => {
+    //         if (err) {
+    //             console.log('数据查询失败')
+    //             return res.status(500).send({error: '数据查询失败'});
+    //         }
+    //         // console.log(row)
+    //         result[0].images = row;
+    //         res.status(200).send(result[0])
+    //     })
+    // })
 })
+
+/**
+ * 查询帖子详情
+ * pid:帖子id
+ * db,数据库参数，
+ * callback 返回值接收
+ * */
+function getPostData(pid, db, callback) {
+    let sql = 'SELECT post.*, user.pic, user.user FROM post LEFT JOIN user ON post.authorid = user.id WHERE postid = ?';
+    db.query(sql, [pid], (err, result) => {
+        if (err) {
+            console.log('数据查询失败');
+            return callback({error: '数据查询失败'});
+        }
+
+        let sqlImg = 'SELECT * from post_images WHERE postid = ?';
+        db.query(sqlImg, [pid], (err, row) => {
+            if (err) {
+                console.log('数据查询失败');
+                return callback({error: '数据查询失败'});
+            }
+
+            result[0].images = row;
+            callback(null, result[0]);
+        });
+    });
+}
 
 /**
  * 添加帖子
@@ -230,12 +263,21 @@ router.post('/addComment', (req, res) => {
     let uid = req.uid
 
     let sql = 'INSERT INTO post_comment (post_id,user_id,content) VALUES (?,?,?)'
+
     db.query(sql, [pid, uid, content], (err, result) => {
         if (err) {
             console.log('数据添加失败')
             res.send('数据添加失败')
         }
-        res.status(200).send("数据添加成功")
+        let sqlNum = ' UPDATE Post SET comment = comment + 1 WHERE postid = ?'
+        db.query(sqlNum, [pid], (err, row) => {
+            if (err) {
+                console.log('数据添加失败')
+                res.send('数据添加失败')
+            }
+            res.status(200).send("数据添加成功")
+        })
+
     })
 })
 
@@ -251,6 +293,52 @@ router.post('/getComment', (req, res) => {
             return res.status(500).send({error: '数据查询失败'});
         }
         res.status(200).send(result)
+    })
+})
+
+/**
+ * 返回用户的收藏列表及其数据
+ * */
+router.get('/collect', (req, res) => {
+
+    let uid = req.uid;
+
+    // 获取收藏内容的ID值
+    let List = [];
+    let sql = 'SELECT postid FROM post_collects WHERE userid = ?'
+
+    db.query(sql, [uid], (err, list) => {
+        if (err) {
+            console.log('数据查询失败')
+            return res.status(500).send({error: '数据查询失败'});
+        }
+        // console.log("aaa")
+        // console.log(list) //[ { postid: 25 }, { postid: 13 }, { postid: 12 }, { postid: 26 } ]
+
+        // 遍历获取帖子内容
+        const promises = list.map(item => {
+            // console.log(item.postid)
+            return new Promise((resolve, reject) => {
+                getPostData(item.postid, db, (error, data) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        // console.log(data)
+                        resolve(data);
+                    }
+                });
+            });
+        });
+
+        Promise.all(promises)
+            .then(result => {
+                // 所有异步调用都成功完成
+                res.status(200).send(result);
+            })
+            .catch(error => {
+                // 至少有一个异步调用导致错误
+                res.status(500).send({error: '数据查询失败'});
+            });
     })
 })
 module.exports = router;

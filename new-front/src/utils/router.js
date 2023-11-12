@@ -6,6 +6,7 @@ import Login from "../components/login/Login.vue";
 import PostDetails from "../components/children/PostDetails.vue";
 import Edit from "../components/children/Edit.vue";
 import Welcome from "../components/page/Welcome.vue";
+import Collect from "../components/children/Collect.vue";
 
 const router = createRouter({
     history: createWebHashHistory(),
@@ -20,6 +21,7 @@ const router = createRouter({
                 {path:'postDetails',component:PostDetails},
                 {path: 'chat', component: Chat},
                 {path: 'edit', component: Edit},
+                {path: 'collect', component: Collect},
             ]
         },
         {path: '/login', component: Login},

@@ -224,30 +224,6 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped lang="scss">
-$boxHeight: 100vh;
-$imgWid: 60%;
-.container {
-  background: white;
-  border-radius: 8px;
-}
-
-.box {
-  width: 100%;
-  height: calc($boxHeight - 30px);
-  border-radius: 8px;
-  overflow-y: scroll;
-}
-
-// chrome 和 safari
-.box::-webkit-scrollbar {
-  width: 0 !important
-}
-
-// ie10+
-.box {
-  -ms-overflow-style: none;
-}
-
 .line {
   margin-bottom: 10px;
   text-align: left;

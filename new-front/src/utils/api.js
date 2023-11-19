@@ -25,9 +25,25 @@ export default {
             })
     },
 
-    // 通过Token查询当前用户，返回用户数据，暂时未实现
-    getCurrentUser(token) {
-        return axios.post('/user/currentUser', {token: token})
+    // 通过 id 查询当前用户，返回用户数据，暂时未实现
+    getCurrentUser(uid) {
+        return axios.post('/user/currentUser', {uid:uid})
+            .then(res => res.data)
+            .catch(err => {
+                throw err
+            })
+    },
+    // 获取用户的图集
+    getUserImages(uid){
+        return axios.post('/user/userImages',{uid:uid})
+            .then(res => res.data)
+            .catch(err => {
+                throw err
+            })
+    },
+    // 获取用户发布过的帖子
+    getUserPost(uid){
+        return axios.post('/user/userPost',{uid:uid})
             .then(res => res.data)
             .catch(err => {
                 throw err
@@ -118,6 +134,12 @@ export default {
             .catch(err => {
                 throw err
             })
-    }
+    },
+    // 提取日期
+    getDateTime(str){
+        // 将字符串解析为日期对象
+        const originalDate = new Date(str);
+        return originalDate.toISOString().slice(0, 16).replace("T", " ")
+    },
 
 }

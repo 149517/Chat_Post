@@ -13,7 +13,10 @@ const store = createStore({
             user:localStorage.getItem('user'),
             pic:localStorage.getItem('pic'),
             intro:localStorage.getItem('intro'),
-            uid:localStorage.getItem('uid')
+            uid:localStorage.getItem('uid'),
+
+            // 选中用户Id，用于控制左侧和聊天
+            selectUid:localStorage.getItem('uid'),
         }
     },
     mutations: {
@@ -28,6 +31,9 @@ const store = createStore({
         },
         toggleChatPage(state,value){
             state.chatPage = value
+        },
+        toggleSelectUid(state,value){
+            state.selectUid = value
         },
         changeSend(state,value){
             state.send = value

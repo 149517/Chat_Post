@@ -1,5 +1,5 @@
 <script setup>
-import {onBeforeUnmount, onMounted, ref} from "vue";
+import {onMounted, ref} from "vue";
 import api from "../../utils/api.js";
 import {useRouter} from "vue-router";
 import {message} from "ant-design-vue";
@@ -28,7 +28,7 @@ const postData = ref([{
  * */
 const getPost = async () => {
   const result = await api.getPostList()
-  console.log(result)
+  // console.log(result)
 
   // 点赞信息
   // 手动添加
@@ -123,7 +123,6 @@ const interact = (op, item) => {
     openDetails(item.postid)
   }
   dataUpload(item)
-  // getInteract()
 }
 
 /**
@@ -140,22 +139,6 @@ const interact = (op, item) => {
  * */
 const dataUpload = async (item) => {
   let List = []
-  // modifyList.value.forEach((item) => {
-  //   let post = postData.value.findIndex(li => li.postid === item);
-  //   if (post !== -1) {
-  //     // postData.value[post]  发生过交互的数据
-  //     // console.log(postData.value[post])
-  //     let data = postData.value[post]
-  //     List.push({
-  //       postid: data.postid,
-  //       collect: data.collect,
-  //       collectActive: data.collectActive,
-  //       thumbs_up: data.thumbs_up,
-  //       likeActive: data.likeActive
-  //     })
-  //   }
-  // })
-  // modifyList.value = null
   List.push({
     postid: item.postid,
     collect: item.collect,
@@ -165,42 +148,43 @@ const dataUpload = async (item) => {
   })
   // 发送数据
   const result = await api.dataUpload(List)
-  // console.log(result)
 }
 
 onMounted(() => {
-  // console.log('aa')
   getPost()
 })
-onBeforeUnmount(() => {
-  // dataUpload()
-})
+
 </script>
 
 <template>
   <div class="container">
     <div class="box">
-      <div class="line theme" v-for="item in postData" :key="item.postid">
-        <div class="head">
-          <img :src="item.pic" alt="">
-          <div class="name">{{ item.user }}</div>
-        </div>
-        <div class="content" @click="openDetails(item.postid)">
-          <div class="tit">{{ item.title }}</div>
-          <div class="con">{{ item.content }}</div>
-          <div class="images">
-            <div class="liBox" v-for="img in item.images">
-              <a-image
-                  v-if="img"
-                  :width="240"
-                  :height="240"
-                  :src="img"
-                  @click.stop
-              ></a-image>
-            </div>
+      <div class="line inContent" v-for="item in postData" :key="item.postid">
+        <div class="inPadding">
+          <div class="head">
+            <img :src="item.pic" alt="">
+            <div class="name">{{ item.user }}</div>
           </div>
-          <div class="time">{{ item.create_time }}</div>
+          <div class="content" @click="openDetails(item.postid)">
+            <div class="tit">{{ item.title }}</div>
+            <div class="con">{{ item.content }}</div>
+            <div class="images">
+              <div class="liBox" v-for="img in item.images">
+                <div class="img">
+                  <a-image
+                      v-if="img"
+                      :width="180"
+                      :height="180"
+                      :src="img"
+                      @click.stop
+                  ></a-image>
+                </div>
+              </div>
+            </div>
+            <div class="time">{{ api.getDateTime(item.create_time) }}</div>
+          </div>
         </div>
+
         <div class="interact">
           <div class="collect" @click="interact('collect',item)">
             <img src="src/assets/icon/collectSelect.png" alt="" v-if="item.collectActive">
@@ -224,6 +208,9 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped lang="scss">
+.inPadding{
+  padding: 20px 20px 0;
+}
 .line {
   margin-bottom: 10px;
   text-align: left;
@@ -231,8 +218,6 @@ onBeforeUnmount(() => {
   top: 0;
   left: 0;
   border-radius: 8px;
-  padding: 20px 20px 0;
-
   .head {
     display: flex;
 
@@ -250,7 +235,7 @@ onBeforeUnmount(() => {
 
   .content {
     margin: 20px 0 0;
-    border-bottom: 2px solid white;
+    //border-bottom: 2px solid white;
 
     .tit {
       font-weight: bold;
@@ -270,16 +255,20 @@ onBeforeUnmount(() => {
       overflow: hidden;
       border-radius: 5px;
       margin-right: 5px;
+
+      .img {
+        border: 1px silver solid;
+      }
     }
   }
 
   .interact {
+    box-shadow: #e5e7eb 1px 1px 5px;
+    margin-top: 5px;;
     padding: 10px 0;
     display: flex;
     justify-content: space-around;
     align-items: center;
-
-
     img {
       width: 30px;
       vertical-align: top;

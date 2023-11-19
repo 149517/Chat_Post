@@ -4,7 +4,7 @@ import App from './App.vue'
 import router from './utils/router.js'
 import store from './utils/store.js'
 import './utils/config.js'
-import 'amfe-flexible'
+// import 'amfe-flexible'
 
 
 

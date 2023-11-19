@@ -1,11 +1,13 @@
 <script setup>
 import User from '../children/User.vue'
+import Friends from "../children/Friends.vue";
 </script>
 
 <template>
 <div class="bg">
   <div class="container">
-    <User class="user"></User>
+<!--    <User class="user"></User>-->
+    <Friends></Friends>
   </div>
 </div>
 </template>

@@ -4,12 +4,13 @@
 //$bgColor: #f8f8f8;
 //$themeColor: #D3E262;
 $btnThemeColor: #D3E262;
-//$themeColor: #f1f1f1;
-$themeColor: #F3F3F5;
+$themeColor: #506F72;
+//$themeColor: #F3F3F5;
 $subtopicColor: #506F72;
-$bgColor: #f1f1f111;
+$activeColor: #87bcbe;
+$bgColor: #F0F6F6;
 $fontColor: #213547;
-$contentColor: #fff;
+$contentColor: #FDFDFD;
 $contentBorderColor: #e5e7eb;
 $ashBgColor: #F3F3F5;
 
@@ -57,7 +58,6 @@ $ashBgDarkColor: #262525;
     background: $contentColor;
   }
 
-
   .theme {
     background: $themeColor;
   }
@@ -68,20 +68,12 @@ $ashBgDarkColor: #262525;
 
   .imgBox {
     &:hover {
-      background: $contentBorderColor;
+      background: $activeColor;
     }
   }
 
   .active {
-    background: $contentBorderColor;
-  }
-
-  .block {
-    background: $contentColor;
-  }
-
-  .ash {
-    background: linear-gradient(to right, $bgColor, $ashBgColor);
+    background: $activeColor;
   }
 }
 
@@ -110,11 +102,6 @@ $ashBgDarkColor: #262525;
 
   .active {
     background: $ashBgDarkColor;
-  }
-
-
-  .block {
-    background: $contentDarkColor;
   }
 }
 body,

@@ -51,12 +51,12 @@ const accept = (value) => {
     <div class="box">
       <h3>内容发布</h3>
 
-      <div class="title">
-        <p>主题</p>
-        <input v-model="tit" type="text">
-      </div>
+<!--      <div class="title">-->
+<!--        <p>主题</p>-->
+<!--        <input v-model="tit" type="text">-->
+<!--      </div>-->
       <div class="text">
-        <p>内容</p>
+<!--        <p>内容</p>-->
         <textarea v-model="tx"></textarea>
 
       </div>
@@ -72,6 +72,8 @@ const accept = (value) => {
 
 <style scoped lang="scss">
 .container {
+  height: 100vh;
+  margin: 0;
   padding: 10px 20px;
   border-radius: 8px;
 }

@@ -19,7 +19,7 @@ onMounted(()=>{
 
 <template>
 <div class="container">
-  <div class="line" v-for="item in data" :key="item.postid">
+  <div class="line inContent" v-for="item in data" :key="item.postid">
     <div class="head">
       <img :src="item.pic" alt="">
       <div class="name">{{item.user}}</div>
@@ -49,10 +49,9 @@ onMounted(()=>{
 }
 .line{
   width: 100%;
-  padding: 10px;
+  padding: 10px 15px;
   margin-bottom: 10px;
   border-radius: 8px;
-  border: 1px solid black;
   text-align: left;
   .head{
     display: flex;

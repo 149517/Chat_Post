@@ -17,7 +17,7 @@
   </div>
 </template>
 <script setup>
-import {ref, defineProps, computed, watch} from 'vue';
+import {ref, computed, watch} from 'vue';
 
 import {PlusOutlined} from "@ant-design/icons-vue";
 import api from "../../utils/api.js";

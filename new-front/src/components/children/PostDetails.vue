@@ -38,7 +38,6 @@ const commentData = ref([
     create_at: null,
   }
 ])
-
 // 评论数据
 const comData = ref([])
 
@@ -187,7 +186,7 @@ onBeforeUnmount(() => {
       <div class="img" v-for="item in data.images" :key="item.image_id">
         <img :src="item.image" alt="">
       </div>
-      <div class="time">{{ data.create_time }}</div>
+      <div class="time">{{ api.getDateTime(data.create_time) }}</div>
       <hr>
       <div class="interact">
         <div class="line">

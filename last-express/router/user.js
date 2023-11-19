@@ -101,7 +101,7 @@ router.post('/userHead', async (req, res) => {
     // 定义一个函数，用于查询用户信息
     const queryUser = (uid) => {
         return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM user WHERE id = ?';
+            const sql = 'SELECT user,id,pic,intro FROM user WHERE id = ?';
             db.query(sql, [uid], (err, result) => {
                 if (err) {
                     console.log('用户信息查询失败');
@@ -128,4 +128,120 @@ router.post('/userHead', async (req, res) => {
     }
 })
 
+// 获取当前用户的信息
+router.post('/currentUser', (req, res) => {
+    const {uid} = req.body;
+
+    let sql = 'SELECT user,id,pic,intro FROM user WHERE id = ?'
+    db.query(sql, [uid], (err, row) => {
+        if (err) {
+            console.log("数据查询失败")
+            return res.status(500).send({error: '数据查询失败'});
+        }
+        if (row.length === 0) {
+            console.log('没有该用户');
+            return res.status(401).send({error: '没有该用户'});
+        }
+        res.status(200).send(row[0])
+    })
+
+})
+
+const getUserPost = (res, uid) => {
+    return new Promise((resolve, reject) => {
+        let sql = 'SELECT postid FROM post WHERE authorid = ?'
+
+        db.query(sql, [uid], (err, row) => {
+            if (err) {
+                console.log('数据查询失败')
+                reject("数据查询失败");
+            }
+            // if (row.length === 0) {
+            //     console.log("没有相关数据")
+            //     reject('没有相关数据');
+            // }
+            resolve(row);
+        });
+    });
+}
+
+// 获取当前用户发布过的图片
+router.post('/userImages', async (req, res) => {
+     const { uid } = req.body;
+
+    try {
+        // 先查询该用户发布过的 post
+        const result = await getUserPost(res, uid);
+        // console.log(result);
+
+        // 根据 postid 查询对应的图片
+        let sql = 'SELECT image FROM post_images WHERE postid = ?';
+        let imagePromises = [];
+
+        for (let item of result) {
+            imagePromises.push(new Promise((resolve, reject) => {
+                db.query(sql, [item.postid], (err, row) => {
+                    if (err) {
+                        console.log('数据查询失败');
+                        reject("数据查询失败");
+                    }
+                    if (row.length > 0) {
+                        resolve(row[0]);
+                    } else {
+                        resolve(null);
+                    }
+                });
+            }));
+        }
+
+        // 等待所有图片查询完成
+        const images = await Promise.all(imagePromises);
+
+        // console.log(images);
+        res.status(200).send(images.filter(image => image !== null));
+    } catch (error) {
+        console.error(error);
+        res.status(400).send("数据查询失败");
+    }
+})
+
+// 获取用户发布过的帖子
+router.post('/userPost',async (req,res)=>{
+    const { uid } = req.body;
+
+    try {
+        // 先查询该用户发布过的 post
+        const result = await getUserPost(res, uid);
+        // console.log(result);
+
+        // 根据 postid 查询对应的图片
+        let sql = 'SELECT postid,content,create_time FROM post WHERE postid = ?';
+        let postPromise = [];
+
+        for (let item of result) {
+            postPromise.push(new Promise((resolve, reject) => {
+                db.query(sql, [item.postid], (err, row) => {
+                    if (err) {
+                        console.log('数据查询失败');
+                        reject("数据查询失败");
+                    }
+                    if (row.length > 0) {
+                        resolve(row[0]);
+                    } else {
+                        resolve(null);
+                    }
+                });
+            }));
+        }
+
+        // 等待所有图片查询完成
+        const posts = await Promise.all(postPromise);
+
+        // console.log(posts);
+        res.status(200).send(posts.filter(post => post !== null));
+    } catch (error) {
+        console.error(error);
+        res.status(400).send("数据查询失败");
+    }
+})
 module.exports = router;

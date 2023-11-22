@@ -7,7 +7,7 @@ import {useStore} from "vuex";
 const store = useStore();
 
 const id = computed(() => store.state.selectUid)
-console.log(id.value)
+// console.log(id.value)
 let uid = store.state.uid
 
 watch(id,(newValue)=>{
@@ -50,12 +50,6 @@ const getPost = async () => {
   posts.value = await api.getUserPost(uid)
 }
 
-const clear = () => {
-  // currentUser.value = null;
-  // posts.value = null;
-  // images.value = null;
-  init()
-}
 const init = () => {
   getUser();
   getImages();
@@ -99,7 +93,6 @@ onMounted(() => {
 
 .plane {
   border-radius: 10px;
-  //padding: 20px 0;
 }
 
 .head {
@@ -129,9 +122,10 @@ onMounted(() => {
 
 .lastly {
   width: 100%;
-  height: 300px;
+  height: calc(100vh - 60px - 150px);
   margin-top: 20px;
   border-radius: 20px;
+  overflow-y: scroll;
 
   img {
     width: 100px;
@@ -151,6 +145,7 @@ onMounted(() => {
       background: #e9f1ff;
       border-radius: 10px;
       margin: 5px 0;
+      color: black;
 
       span {
         display: inline-block;
@@ -162,5 +157,7 @@ onMounted(() => {
     }
   }
 }
-
+.lastly::-webkit-scrollbar {
+  width: 0 !important
+}
 </style>

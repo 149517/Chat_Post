@@ -97,6 +97,7 @@ router.get('/all', (req, res) => {
  * */
 router.post('/userHead', async (req, res) => {
     let {list} = req.body;
+    // console.log(list)
     let data = []
     // 定义一个函数，用于查询用户信息
     const queryUser = (uid) => {
@@ -118,6 +119,7 @@ router.post('/userHead', async (req, res) => {
 
     try {
         for (let uid of list) {
+            // console.log(uid)
             const user = await queryUser(uid);
             data.push(user);
         }

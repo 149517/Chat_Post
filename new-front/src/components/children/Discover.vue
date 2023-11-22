@@ -68,6 +68,7 @@ const getInteract = async () => {
       }
     })
   })
+  postData.value.reverse()
 }
 
 

@@ -142,4 +142,16 @@ export default {
         return originalDate.toISOString().slice(0, 16).replace("T", " ")
     },
 
+    /**
+     * 消息请求
+     * */
+
+    // 获取所有的消息记录
+    getMessageAll(){
+        return axios.get('/message/all')
+            .then(res => res.data)
+            .catch(err => {
+                throw err
+            })
+    }
 }

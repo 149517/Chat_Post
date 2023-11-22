@@ -7,6 +7,7 @@ const socketIO = require('./io/socket')
 const db = require('./db/db.js');
 const userRouter = require('./router/user.js');
 const postRouter = require('./router/post.js');
+const messageRouter = require('./router/message.js')
 const parseToken = require('./db/parseToken')
 const cors = require('cors');
 
@@ -31,6 +32,7 @@ app.use(function (req, res, next) {
 // 使用路由
 app.use('/user', userRouter);
 app.use('/post', postRouter);
+app.use('/message', messageRouter);
 
 // 使用 Socket.io
 socketIO(httpServer);

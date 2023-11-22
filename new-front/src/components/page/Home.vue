@@ -34,7 +34,7 @@ $rightWidth: 230px;
 $contentWidth: calc(100vw - 300px * 2 - 30px * 2 - 20px - 40px);
 $boxHeight: 98vh;
 .container {
-  padding: 20px;
+  padding: 0 20px;
   display: flex;
   justify-content: space-between;
 }
@@ -112,7 +112,7 @@ $boxHeight: 98vh;
 
 .h_content {
   width: $contentWidth;
-  //height: 98vh;
+  min-height: 100vh;
   margin: 0 10px;
   border-radius: 8px;
   transition: all .5s linear;

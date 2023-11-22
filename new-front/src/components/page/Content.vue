@@ -13,7 +13,8 @@
 <style scoped lang="scss">
 .container {
   width: 100%;
-  height: 100%;
+  //height: 100vh;
+  //height: 100%;
   transition: all .5s linear;
 }
 </style>

@@ -99,7 +99,7 @@ const menu = ref([
       toggleIcon: "",
       toggle: false,
       fun: "",
-      link: "/login",
+      link: "/home/person",
       active: false
     }],
 ])
